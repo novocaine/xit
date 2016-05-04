@@ -12,6 +12,15 @@ def _grouper(iterable, n):
     return (filter(None, x) for x in itertools.izip_longest(*args))
 
 
+PARAM_COLUMNS = ("access_level", "billing_group", "user_id", "password")
+
+
+def _validate_fields(fields):
+    for p in PARAM_COLUMNS:
+        if p not in fields:
+            raise ValueError("missing %s column; %s" % (p, fields))
+
+
 def _get_users_from_csv(csvfile):
     # yield dicts of entity fields
     reader = csv.reader(csvfile)
@@ -25,21 +34,29 @@ def _get_users_from_csv(csvfile):
             for colheader, field in itertools.izip(colheaders, row)
         }
 
+        _validate_fields(fields)
+
         yield fields
 
 
 def _fields_to_batch_data(url, rows_of_fields):
+    payload = []
+    for fields in rows_of_fields:
+        body = {
+            "fields": { k: v for k, v in fields.iteritems()
+                if k not in PARAM_COLUMNS },
+        }
+
+        body.update({ p: fields[p] for p in PARAM_COLUMNS })
+
+        payload.append({
+            "method": "POST",
+            "url": url,
+            "body": body
+        })
+
     return {
-        "batch": [
-            {
-                "method": "POST",
-                "url": url,
-                "body": {
-                    "fields": fields
-                }
-            }
-            for fields in rows_of_fields
-        ]
+        "batch": payload
     }
 
 
