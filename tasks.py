@@ -1,5 +1,6 @@
 from celery import Celery
 import time
+from xplan import upload_user_csv
 
 app = Celery('tasks')
 app.config_from_object("celeryconfig")
@@ -13,3 +14,7 @@ def add(self, x, y):
         self.update_state(state='PROGRESS',
                 meta={'current': i, 'total': accum_result})
     return x + y
+
+@app.task(bind=True)
+def process_user_csv(self, csv):
+    upload_user_csv() 
