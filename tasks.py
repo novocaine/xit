@@ -1,6 +1,6 @@
 from celery import Celery
 import time
-from xplan import upload_user_csv
+from users import upload_user_csv
 from io import BytesIO
 
 app = Celery('tasks')

@@ -28,8 +28,8 @@ def task(task):
     }), status=102, mimetype="application/json")
 
 
-@app.route("/upload_user_csv", methods=["POST"])
-def upload_user_csv():
+@app.route("/upload_csv/<csv_type>", methods=["POST"])
+def upload_user_csv(csv_type):
     arg_names = "xplan_url", "xplan_username", "xplan_password"
     try:
         args = [ request.form[arg_name] for arg_name in arg_names ]
@@ -41,11 +41,19 @@ def upload_user_csv():
     except KeyError as ex:
         return make_response("Missing file field", 400)
 
+    if csv_type == "users":
+        task = process_user_csv
+    elif csv_type == "access_levels":
+        task = process_access_levels_csv
+    else:
+        return make_response("Unknown CSV type", 404)
+
     filename = secure_filename(file.filename)
     path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
     file.save(path)
     args.append(path)
-    async_result = process_user_csv.delay(*args)
+
+    async_result = task.delay(*args)
     return make_response(str(async_result.id), 200)
 
 

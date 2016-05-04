@@ -2,7 +2,7 @@ import os
 import requests
 import urlparse
 from nose.tools import assert_equal, assert_true
-from test_util import spammy_logging, TEST_CSV
+from test_util import spammy_logging, TEST_USERS_CSV
 from io import BytesIO
 
 class TestWeb(object):
@@ -13,11 +13,16 @@ class TestWeb(object):
         self.xplan_password = os.environ["xplan_password"]
 
     def test_upload(self):
+        """
+        Tests what looks like success from an HTTP code perspective, but doesn't look
+        at any of the data. Intent is to check the celery glue.
+        """
+
         # upload a file and get a task id
         files = [
-            ("file", ("file.csv", BytesIO(TEST_CSV), 'text/csv'))
+            ("file", ("file.csv", BytesIO(TEST_USERS_CSV), 'text/csv'))
         ]
-        response = requests.post(urlparse.urljoin(self.web_url, "/upload_user_csv"),
+        response = requests.post(urlparse.urljoin(self.web_url, "/upload_csv/users"),
             data={
                 "xplan_url": self.xplan_url,
                 "xplan_username": self.xplan_username,
@@ -39,6 +44,7 @@ class TestWeb(object):
         else:
             assert_true(False)
 
+        # does it look like it worked??
         task_desc = response.json()
         assert_equal(len(task_desc), 1)
         assert_equal(task_desc[0]["code"], 201)
