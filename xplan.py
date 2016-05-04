@@ -18,7 +18,12 @@ def _grouper(iterable, n):
 def _get_fields_from_csv(csvfile):
     # yield dicts of entity fields
     reader = csv.reader(csvfile)
-    colheaders = next(reader)
+
+    # read the colheaders, skipping leading rows that start with #
+    while True:
+        colheaders = next(reader)
+        if not colheaders[0].startswith("#"):
+            break
 
     # TODO: validate colheaders?
 

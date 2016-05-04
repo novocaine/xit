@@ -1,9 +1,11 @@
 import logging
 import time
 
-TEST_USERS_CSV = b"""user_id,password,access_level,billing_group\njoe.bloggs%d,password,Adviser,__default__\n""" % time.time()
-TEST_ACCESS_LEVELS_CSV = b"""access_level,edit_entity_note,list_group,login,client_focus,allow_email
-Test Access Level %s,,X,X,X,,""" % time.time()
+TEST_USERS_CSV = b"""user_id,password,access_level,billing_group
+joe.bloggs%d,password,Adviser,__default__\n""" % time.time()
+TEST_ACCESS_LEVELS_CSV = b"""access_level_name,access_level_id,edit_entity_note,list_group,login,client_focus,allow_email
+Test Access Level %s,,X,X,X,,
+,5,,,,,,""" % time.time() # '5' is 'receptionist'
 
 def spammy_logging():
     try:
