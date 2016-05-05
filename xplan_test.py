@@ -52,6 +52,7 @@ class TestDumpAccessLevels(_Base):
         result = dump_access_levels_csv(self.xplan_url, self.xplan_username,
             self.xplan_password)
         reader = csv.reader(BytesIO(result))
+        next(reader)
         col_header = next(reader)
         assert_true(len(col_header) > 2)
         assert_equal(col_header[:2], ["access_level_id", "access_level_name"])
