@@ -8,7 +8,7 @@ from flask_bootstrap import Bootstrap
 from flask_wtf import Form
 from flask_wtf.file import FileField, FileAllowed
 from werkzeug import secure_filename
-from wtforms import RadioField, TextField
+from wtforms import PasswordField, RadioField, TextField
 from wtforms.validators import DataRequired
 
 from tasks import process_user_csv, process_access_levels_csv
@@ -32,7 +32,7 @@ class CsvUploadForm(Form):
     xplan_username = TextField(
         'Username',
         validators=[DataRequired()])
-    xplan_password = TextField(
+    xplan_password = PasswordField(
         'Password',
         validators=[DataRequired()])
     csv_type = RadioField(
