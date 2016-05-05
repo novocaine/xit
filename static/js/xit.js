@@ -44,17 +44,13 @@
   }
 
   function formatImportReportRow(response, action) {
-    var body = $.parseJSON(response.body);
-    if (response.code === 200) {
-        return "<td class='success'>" + formatSuccess(body, response.code, action)
-            + "</td>";
-    } else if (response.code === 201) {
+    if (response.code === 200 || response.code === 201) {
+        var body = $.parseJSON(response.body);
         return "<td class='success'>" + formatSuccess(body, response.code, action)
             + "</td>";
     } else {
         return "<td class='danger'>Failed: " + 
-            (body.user_message || body.api_message) + 
-            "</td>";
+            response.msg +"</td>";
     }
   }
 

@@ -33,9 +33,92 @@ footer {
 
 <div class="row"><div id="csv-upload-container" class="col-lg-offset-2 col-lg-8">
 
-<h3 class="text-center" id="big-header">Upload Users & Access Levels</h3>
+<div class="text-center" id="big-header">
+    <h3>
+        Upload Users & Access Levels
+    </h3>
 
+    <p>
+      <a data-toggle="modal" href="#helpModal">Not sure what this is?</a>
+    </p>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h3>Overview</h3>
+        This tool helps you upload Users and Access Levels to an XPLAN site in bulk, from a spreadsheet.
+        
+        Getting all the data right in a spreadsheet is a lot quicker than clicking around in XPLAN, and a lot
+        less error prone.
+
+        To use the tool effectively, you'll need: 
+        
+        <ul>
+            <li>To have some idea of what the access levels and users logins should be before you start.</li>
+            <li>A login to the XPLAN site that allows you to create users and/or to edit access levels. You 
+                can verify whether that's the case by searching for yourself as a user in XPLAN and then looking
+                at your own capabilities - you need 'Create Users' and 'Edit Access Levels'.</li>
+            <li>Microsoft Excel.</li>
+        </ul>
+
+        <h3>Uploading access levels</h3>
+
+        <p>Access levels are sets of capabilities within XPLAN that control what each type of user can do. 
+        You generally set these up according to the types of user within the business e.g. Adviser, Secretary,
+        Administrator.</p>
+
+        <p>When you go to upload users, you'll want to specify an access level for each user. So it makes sense
+        to do this step first.</p>
+
+        <p>Download the site's current access levels using the link at the bottom of the page, then 
+        upen up the CSV file that downloads in Microsoft Excel and edit it.</p>
+
+        <p>The columns along the top of the file indicate the capabilities in the site - there are generally 
+        rather a lot of these. They run left to right in alphabetical order of their title. Don't edit these
+        columns.</p>
+       
+        <p>You include capbilities in an access level by marking the cell with something (like X for example) 
+        and exclude them by leaving the cell blank.</p>
+
+        <p>If you want to add a new access level, put a new row in at the end of the spreadsheet like the other
+        rows, but leave the first 'access_level' column blank. XPLAN will generate this access level ID for you
+        when you upload the file. As a rule, if that column has an ID in it, you're updating an existing access
+        level, and if it's blank, you're creating a new one.</p>
+
+        <p>When you're done, come back to this tool and upload the file, choosing "Upload a CSV of new and 
+        existing Access Levels".</p>
+
+        <h3>Uploading users</h3>
+
+        <p>Download the New Users template using the link at the bottom of the page. This contains some sample
+        data and field ids along the columns at the top.</p>
+
+        <p>The mandatory columns are user_id (which sets the XPLAN login id), password (for XPLAN login), 
+        access_level (which sets the access level of the user to one you created or updated earlier), and 
+        billing_group (which sets an XPLAN billing group). Everything else is optional.</p>
+
+        <p>To add new columns of fields, you need to locate the XPLAN of the field first. In XPLAN, go to XPLAN &x2192; 
+        Administration Functions &x2192; Field Definitions and click on the field. The field ID is in "name/ID"
+        after the entity / (slash) part but not including any number. For example, the Key Details | First Name
+        field has "entity / first_name (2)" - you want the first_name bit only for your column header.</p>
+
+        <p>Add a new column with your field_id as the first row like the other columns you can see in the template.
+        Any data you put in that column will be set on the user at creation.</p>
+
+        <p>Upload the file using 'Upload a CSV of new users' and you are done.</p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div id="front-page">
+
 <form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
   {{ form.hidden_tag() }}
   
@@ -64,8 +147,9 @@ footer {
 </form>
 
 <div id="halp">
-<div class="help-block">Not sure how to get started?</div>
+<div class="help-block">Trying to get started?</div>
 <p>
+<a href="#">Help</a>
 <a href="#" id="download-access-levels">Download the current Access Levels as a CSV</a>
 - you can edit this and upload it back
 </p>

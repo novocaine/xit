@@ -38,7 +38,7 @@ class CsvUploadForm(Form):
         validators=[DataRequired()])
     csv_type = RadioField(
         'CSV Type',
-        choices=(('users', 'Upload A CSV of new users'), ('access_levels', ' Upload a CSV of new and existing Access Levels')),
+        choices=(('users', 'Upload a CSV of new users'), ('access_levels', ' Upload a CSV of new and existing Access Levels')),
         default='users',
         validators=[DataRequired()])
     file = FileField('CSV File', validators=[
