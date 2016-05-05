@@ -4,6 +4,7 @@ import os.path
 import tempfile
 
 from flask import Flask, request, make_response, render_template, Response
+from flask_bootstrap import Bootstrap
 from flask_wtf import Form
 from flask_wtf.file import FileField, FileAllowed
 from werkzeug import secure_filename
@@ -20,16 +21,19 @@ app = Flask(__name__)
 app.config["UPLOAD_FOLDER"] = tempfile.gettempdir()
 app.config["SECRET_KEY"] = os.environ.get('XIT_SECRET', 'secret-key')
 
+bs = Bootstrap()
+bs.init_app(app)
+
 
 class CsvUploadForm(Form):
     xplan_url = TextField(
         'XPLAN URL',
         validators=[DataRequired()])
     xplan_username = TextField(
-        'XPLAN Username',
+        'Username',
         validators=[DataRequired()])
     xplan_password = TextField(
-        'XPLAN Password',
+        'Password',
         validators=[DataRequired()])
     csv_type = RadioField(
         'CSV Type',

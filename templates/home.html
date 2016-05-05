@@ -1,28 +1,36 @@
 {% extends "layout.html" %}
 
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block page_title %}XIT: XPLAN Implementation Toolkit{% endblock %}
 
 {% block content %}
-<h1>XIT: XPLAN Implementation Toolkit</h1>
+<h1>CSV Upload</h1>
 
-<form id="csv-upload-form" method="POST" class="form" action="{{ url_for('upload_csv', csv_type='users') }}" enctype="multipart/form-data">
+<div class="row"><div class="col-lg-offset-2 col-lg-8">
+
+<form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
   {{ form.hidden_tag() }}
   
-  {{ form.xplan_url.label }}
-  {{ form.xplan_url }}
+  {{ wtf.form_errors(form) }}
   
-  {{ form.xplan_username.label }}
-  {{ form.xplan_username }}
+  {{ wtf.form_field(form.xplan_url, form_type="horizontal") }}
   
-  {{ form.xplan_password.label }}
-  {{ form.xplan_password }}
+  {{ wtf.form_field(form.xplan_username, form_type="horizontal") }}
+  
+  {{ wtf.form_field(form.xplan_password, form_type="horizontal") }}
 
-  <p>CSV Type:</p>
-  {{ form.csv_type }}
+  {{ wtf.form_field(form.csv_type, form_type="horizontal") }}
   
-  {{ form.file }}
+  {{ wtf.form_field(form.file, form_type="horizontal") }}
 
-  <button type="submit" class="btn btn-default">Upload</button>
+  <div class="form-group">
+  <div class="col-lg-offset-2 col-lg-10">
+    <button type="submit" class="btn btn-primary">Upload</button>
+  </div>
+  </div>
 
 </form>
+
+</div></div>
 {% endblock %}
