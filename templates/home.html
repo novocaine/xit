@@ -54,32 +54,14 @@ footer {
         Getting all the data right in a spreadsheet is a lot quicker than clicking around in XPLAN, and a lot
         less error prone.
 
-        To use the tool effectively, you'll need: 
-        
-        <ul>
-            <li>To have some idea of what the access levels and users logins should be before you start.</li>
-            <li>A login to the XPLAN site that allows you to create users and/or to edit access levels. You 
-                can verify whether that's the case by searching for yourself as a user in XPLAN and then looking
-                at your own capabilities - you need 'Create Users' and 'Edit Access Levels'.</li>
-            <li>Microsoft Excel.</li>
-        </ul>
+        Note that you will need a login to the XPLAN site that allows you to create users and/or to edit access 
+        levels.
 
         <h3>Uploading access levels</h3>
-
-        <p>Access levels are sets of capabilities within XPLAN that control what each type of user can do. 
-        You generally set these up according to the types of user within the business e.g. Adviser, Secretary,
-        Administrator.</p>
-
-        <p>When you go to upload users, you'll want to specify an access level for each user. So it makes sense
-        to do this step first.</p>
 
         <p>Download the site's current access levels using the link at the bottom of the page, then 
         upen up the CSV file that downloads in Microsoft Excel and edit it.</p>
 
-        <p>The columns along the top of the file indicate the capabilities in the site - there are generally 
-        rather a lot of these. They run left to right in alphabetical order of their title. Don't edit these
-        columns.</p>
-       
         <p>You include capbilities in an access level by marking the cell with something (like X for example) 
         and exclude them by leaving the cell blank.</p>
 
@@ -93,17 +75,16 @@ footer {
 
         <h3>Uploading users</h3>
 
-        <p>Download the New Users template using the link at the bottom of the page. This contains some sample
-        data and field ids along the columns at the top.</p>
+        <p>Download the New Users template using the link at the bottom of the page.</p>
 
         <p>The mandatory columns are user_id (which sets the XPLAN login id), password (for XPLAN login), 
         access_level (which sets the access level of the user to one you created or updated earlier), and 
         billing_group (which sets an XPLAN billing group). Everything else is optional.</p>
 
-        <p>To add new columns of fields, you need to locate the XPLAN of the field first. In XPLAN, go to XPLAN &x2192; 
-        Administration Functions &x2192; Field Definitions and click on the field. The field ID is in "name/ID"
+        <p>To add new columns of fields, you need to locate the XPLAN of the field first. In XPLAN, go to XPLAN &gt; 
+        Administration Functions &gt; Field Definitions and click on the field. The field ID is in "name/ID"
         after the entity / (slash) part but not including any number. For example, the Key Details | First Name
-        field has "entity / first_name (2)" - you want the first_name bit only for your column header.</p>
+        field has "entity / first_name (2)" - you want the <i>first_name</i> bit only for your column header.</p>
 
         <p>Add a new column with your field_id as the first row like the other columns you can see in the template.
         Any data you put in that column will be set on the user at creation.</p>
