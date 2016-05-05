@@ -1,16 +1,47 @@
-from flask import Flask, request, make_response, Response
 import json
-import flask
-from tasks import process_user_csv, process_access_levels_csv
-from access_levels import dump_access_levels_csv
-from werkzeug import secure_filename
+import os
 import os.path
 import tempfile
+
+from flask import Flask, request, make_response, render_template, Response
+from flask_wtf import Form
+from flask_wtf.file import FileField, FileAllowed
+from werkzeug import secure_filename
+from wtforms import RadioField, TextField
+from wtforms.validators import DataRequired
+
+from tasks import process_user_csv, process_access_levels_csv
+from access_levels import dump_access_levels_csv
+
 
 app = Flask(__name__)
 
 # TODO put them somewhere secure
 app.config["UPLOAD_FOLDER"] = tempfile.gettempdir()
+app.config["SECRET_KEY"] = os.environ.get('XIT_SECRET', 'secret-key')
+
+
+class CsvUploadForm(Form):
+    xplan_url = TextField(
+        'XPLAN URL',
+        validators=[DataRequired()])
+    xplan_username = TextField(
+        'XPLAN Username',
+        validators=[DataRequired()])
+    xplan_password = TextField(
+        'XPLAN Password',
+        validators=[DataRequired()])
+    csv_type = RadioField(
+        'CSV Type',
+        choices=(('users', 'Users'), ('access_levels', 'Access Levels')),
+        default='users',
+        validators=[DataRequired()])
+    file = FileField('CSV File', validators=[
+        DataRequired(),
+        FileAllowed(
+            ('csv',),
+            ('Only CSV files can be uploaded for this field'))])
+
 
 @app.route("/task/<task>")
 def task(task):
@@ -30,7 +61,7 @@ def task(task):
 
 
 @app.route("/upload_csv/<csv_type>", methods=["POST"])
-def upload_user_csv(csv_type):
+def upload_csv(csv_type):
     arg_names = "xplan_url", "xplan_username", "xplan_password"
     try:
         args = [ request.form[arg_name] for arg_name in arg_names ]
@@ -67,6 +98,15 @@ def dump_access_levels():
         return make_response("Missing param: %s" % ex[0], 400)
 
     return Response(response=dump_access_levels_csv(*args), status=200, mimetype="text/csv")
+
+
+@app.route("/")
+def home():
+    form = CsvUploadForm()
+    template_vars = dict(
+        form=form)
+    return render_template("home.html",
+                           **template_vars)
 
 
 if __name__ == "__main__":
