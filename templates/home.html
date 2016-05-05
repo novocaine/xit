@@ -4,21 +4,40 @@
 
 {% block page_title %}XIT: XPLAN Implementation Toolkit{% endblock %}
 
+{% block css %}
+<style>
+#big-header {
+    margin-top: 0; 
+    margin-bottom: 2em;
+}
+
+.form-description {
+    margin-bottom: 1em;
+}
+
+</style>
+{% endblock %}
+
 {% block content %}
-<h1>CSV Upload</h1>
 
 <div class="row"><div id="csv-upload-container" class="col-lg-offset-2 col-lg-8">
+
+<h3 class="text-center" id="big-header">Upload Users & Access Levels</h3>
 
 <form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
   {{ form.hidden_tag() }}
   
   {{ wtf.form_errors(form) }}
+
+  <div class="help-block">Your XPLAN site and credentials</div>
   
   {{ wtf.form_field(form.xplan_url, form_type="horizontal") }}
   
   {{ wtf.form_field(form.xplan_username, form_type="horizontal") }}
   
   {{ wtf.form_field(form.xplan_password, form_type="horizontal") }}
+
+  <div class="help-block">What sort of data would you like to upload?</div>
 
   {{ wtf.form_field(form.csv_type, form_type="horizontal") }}
   
@@ -29,7 +48,17 @@
     <button type="submit" id="csv-upload-submit" class="btn btn-primary">Upload</button>
   </div>
   </div>
+
 </form>
+
+<div class="help-block">Not sure how to get started?</div>
+<p>
+<a href="#" id="download-access-levels">Download the current Access Levels as a CSV</a>
+- you can edit this and upload it back
+</p>
+<p>
+<a href="/users.csv">Download a New Users template</a> - add your users to this and upload it
+</p>
 
 </div></div>
 {% endblock %}

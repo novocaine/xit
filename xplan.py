@@ -37,6 +37,9 @@ def _get_fields_from_csv(csvfile):
 
 
 def upload_csv(xplan_url, url, xplan_username, xplan_password, csvfile, chunksize, fields_to_batch_data):
+    if not xplan_url.endswith("/"):
+        xplan_url += "/"
+
     resourceful_url = urlparse.urljoin(xplan_url, "resourceful")
 
     session = requests.Session()

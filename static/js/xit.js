@@ -20,10 +20,43 @@
         + '</a></h2>');
   }
 
+  function formatSuccess(body, code, action) {
+    var xplan_url = $("#xplan_url").get(0).value;
+    if (xplan_url[xplan_url-1] !== "/") {
+        xplan_url += "/";
+    }
+    if (action === "/upload_csv/users") {
+      if (code === 200) {
+        label = "Updated user " + body.id;
+      } else {
+        label = "Created user " + body.id;
+      }
+      var user_url = xplan_url + "factfind/view/" + body.id + "?role=user";
+      return "<a href='" + user_url + "'>" + label + "</a>";
+    } else {
+      return body;
+    }
+  }
+
+  function formatImportReportRow(response, action) {
+    var body = $.parseJSON(response.body);
+    if (response.code === 200) {
+        return "<td class='success'>" + formatSuccess(body, response.code, action)
+            + "</td>";
+    } else if (response.code === 201) {
+        return "<td class='success'>" + formatSuccess(body, response.code, action)
+            + "</td>";
+    } else {
+        return "<td class='danger'>Failed: " + 
+            (body.user_message || body.api_message) + 
+            "</td>";
+    }
+  }
+
   /**
    * Shows a report of all response data from the resourceful API.
    */
-  function showImportReport(data) {
+  function showImportReport(data, action) {
     var reportHead = '<div class="table-responsive">'
       + '<table class="table table-hover table-striped">'
       + '<thead><tr>'
@@ -40,7 +73,7 @@
 
     $.each(data, function(i, v) {
       reportBody += '<tr>'
-        + '<td>' + v.body + '</td>'
+        + formatImportReportRow(v, action)
         + '</tr>';
     });
 
@@ -52,14 +85,13 @@
   /**
    * Polls the server at a regular interval to see if the task has finished.
    */
-  function pollTaskStatus(task_uuid) {
+  function pollTaskStatus(task_uuid, action) {
     $.get('/task/' + task_uuid, function(data) {
       $('#loading-container').hide();
 
-      if (data && data.length && data[0].code &&
-          data[0].code >= 200 && data[0].code <= 299) {
+      if (data && data.length) {
         showMessage('Done!', 'success');
-        showImportReport(data);
+        showImportReport(data, action);
       }
       else {
         // Unexpected if the server returns "success" but data has no
@@ -83,7 +115,7 @@
         // with empty body, so keep polling.
         else {
           setTimeout(function() {
-            pollTaskStatus(task_uuid);
+            pollTaskStatus(task_uuid, action);
           }, pollInterval);
         }
       });
@@ -118,14 +150,16 @@
           + '<span class="sr-only">Importing. Hang tight!</span>'
           + '</div>');
 
+      var action = $(this).attr('action');
+
       $.ajax({
-        url: $(this).attr('action'),
+        url: action,
         type: 'POST',
         data: form_data,
         async: false,
         success: function(data) {
           setTimeout(function() {
-            pollTaskStatus(data);
+            pollTaskStatus(data, action);
           }, pollInterval);
         },
         cache: false,
@@ -139,4 +173,17 @@
       return false;
     });
   }
+
+  // Access level dump
+  $("#download-access-levels").on('click', function() {
+    var xplan_url = $("#xplan_url").get(0).value;
+    if (xplan_url.length === 0) {
+        $(this).parent().before("<div class='alert alert-warning'>Please enter your XPLAN URL above.</div>");
+        return;
+    }
+    $(this).parent().parent().children(".alert").remove();
+    window.location.href = "/access_levels?xplan_url=" + xplan_url + 
+      "&xplan_username=" + $("#xplan_username").get(0).value + 
+      "&xplan_password=" + $("#xplan_password").get(0).value;
+  }); 
 }).call(this, jQuery, window);

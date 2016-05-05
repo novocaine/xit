@@ -58,11 +58,19 @@ def upload_access_level_csv(xplan_url, xplan_username, xplan_password, csvfile):
 
 
 def dump_access_levels_csv(xplan_url, xplan_username, xplan_password):
+    if not xplan_url.endswith("/"):
+        xplan_url += "/"
+
     session = requests.Session()
     session.auth = (xplan_username, xplan_password)
 
-    caps = session.get(urlparse.urljoin(xplan_url, CAPS_URL[1:])).json()
-    access_levels = session.get(urlparse.urljoin(xplan_url, ACCESS_LEVELS_URL[1:])).json()
+    caps = session.get(urlparse.urljoin(xplan_url, CAPS_URL[1:]))
+    caps.raise_for_status()
+    caps = caps.json()
+
+    access_levels = session.get(urlparse.urljoin(xplan_url, ACCESS_LEVELS_URL[1:]))
+    access_levels.raise_for_status()
+    access_levels = access_levels.json()
 
     b = BytesIO()
     writer = csv.writer(b)

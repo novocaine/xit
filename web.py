@@ -2,6 +2,7 @@ import json
 import os
 import os.path
 import tempfile
+import requests
 
 from flask import Flask, request, make_response, render_template, Response
 from flask_bootstrap import Bootstrap
@@ -37,7 +38,7 @@ class CsvUploadForm(Form):
         validators=[DataRequired()])
     csv_type = RadioField(
         'CSV Type',
-        choices=(('users', 'Users'), ('access_levels', 'Access Levels')),
+        choices=(('users', 'Upload A CSV of new users'), ('access_levels', ' Upload a CSV of new and existing Access Levels')),
         default='users',
         validators=[DataRequired()])
     file = FileField('CSV File', validators=[
@@ -101,7 +102,13 @@ def dump_access_levels():
     except KeyError as ex:
         return make_response("Missing param: %s" % ex[0], 400)
 
-    return Response(response=dump_access_levels_csv(*args), status=200, mimetype="text/csv")
+    try:
+        return Response(response=dump_access_levels_csv(*args), status=200, mimetype="text/csv")
+    except requests.HTTPError as ex:
+        if ex.response.status_code == 401:
+            return make_response("Invalid XPLAN username or password", 401)
+        else:
+            return make_response("Error talking to XPLAN", 500)
 
 
 @app.route("/")
@@ -109,6 +116,7 @@ def home():
     form = CsvUploadForm()
     template_vars = dict(
         form=form)
+
     return render_template("home.html",
                            **template_vars)
 
