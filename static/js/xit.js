@@ -20,6 +20,9 @@
         + '</a></h2>');
   }
 
+  /**
+   * Formats a success message that shows for a row in the import report.
+   */
   function formatSuccess(body, code, action) {
     var xplan_url = $("#xplan_url").get(0).value;
     if (xplan_url[xplan_url.length-1] !== "/") {
@@ -43,13 +46,16 @@
     }
   }
 
+  /**
+   * Gets the markup for one row of the import report.
+   */
   function formatImportReportRow(response, action) {
     if (response.code === 200 || response.code === 201) {
         var body = $.parseJSON(response.body);
         return "<td class='success'>" + formatSuccess(body, response.code, action)
             + "</td>";
     } else {
-        return "<td class='danger'>Failed: " + 
+        return "<td class='danger'>Failed: " +
             response.msg +"</td>";
     }
   }
@@ -135,56 +141,57 @@
   }
 
   // Form submit handler stuff.
-  if ($('#csv-upload-form').length) {
-    $('#csv-upload-form').on('submit', function() {
-      // Thanks to: http://stackoverflow.com/a/10899796
-      var form_data = new FormData($(this)[0]);
+  $('#csv-upload-form').on('submit', function() {
+    // Thanks to: http://stackoverflow.com/a/10899796
+    var form_data = new FormData($(this)[0]);
 
-      $('#front-page').hide();
+    $('#front-page').hide();
 
-      // Funky loader.
-      $('#csv-upload-container')
-        .append(
-          '<div id="loading-container" class="text-center">'
-          + '<i class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"'
-          + 'style="animation: fa-spin 4s infinite linear"></i>'
-          + '<span class="sr-only">Importing. Hang tight!</span>'
-          + '</div>');
+    // Funky loader.
+    $('#csv-upload-container')
+      .append(
+        '<div id="loading-container" class="text-center">'
+        + '<i class="fa fa-cog fa-spin fa-3x fa-fw" aria-hidden="true"'
+        + 'style="animation: fa-spin 4s infinite linear"></i>'
+        + '<span class="sr-only">Importing. Hang tight!</span>'
+        + '</div>');
 
-      var action = $(this).attr('action');
+    var action = $(this).attr('action');
 
-      $.ajax({
-        url: action,
-        type: 'POST',
-        data: form_data,
-        async: false,
-        success: function(data) {
-          setTimeout(function() {
-            pollTaskStatus(data, action);
-          }, pollInterval);
-        },
-        cache: false,
-        contentType: false,
-        processData: false})
-        .fail(function(jqXHR, textStatus, errorThrown) {
-          $('#loading-container').hide();
-          showMessage(errorThrown, 'danger');
-        });
+    $.ajax({
+      url: action,
+      type: 'POST',
+      data: form_data,
+      async: false,
+      success: function(data) {
+        setTimeout(function() {
+          pollTaskStatus(data, action);
+        }, pollInterval);
+      },
+      cache: false,
+      contentType: false,
+      processData: false})
+      .fail(function(jqXHR, textStatus, errorThrown) {
+        $('#loading-container').hide();
+        showMessage(errorThrown, 'danger');
+      });
 
-      return false;
-    });
-  }
+    return false;
+  });
 
   // Access level dump
   $("#download-access-levels").on('click', function() {
     var xplan_url = $("#xplan_url").get(0).value;
     if (xplan_url.length === 0) {
-        $(this).parent().before("<div class='alert alert-warning'>Please enter your XPLAN URL above.</div>");
-        return;
+      $(this).parent().before("<div class='alert alert-warning'>Please enter your XPLAN URL above.</div>");
+      return false;
     }
+
     $(this).parent().parent().children(".alert").remove();
-    window.location.href = "/access_levels?xplan_url=" + xplan_url + 
-      "&xplan_username=" + $("#xplan_username").get(0).value + 
+    window.location.href = "/access_levels.csv?xplan_url=" + xplan_url +
+      "&xplan_username=" + $("#xplan_username").get(0).value +
       "&xplan_password=" + $("#xplan_password").get(0).value;
-  }); 
+
+    return false;
+  });
 }).call(this, jQuery, window);

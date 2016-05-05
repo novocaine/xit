@@ -94,7 +94,7 @@ def upload_csv(csv_type):
     return make_response(str(async_result.id), 200)
 
 
-@app.route("/access_levels")
+@app.route("/access_levels.csv")
 def dump_access_levels():
     arg_names = "xplan_url", "xplan_username", "xplan_password"
     try:

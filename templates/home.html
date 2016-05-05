@@ -7,7 +7,7 @@
 {% block css %}
 <style>
 #big-header {
-    margin-top: 0; 
+    margin-top: 0;
     margin-bottom: 2em;
 }
 
@@ -29,13 +29,13 @@ footer {
 
 {% block content %}
 
-<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+<a href="https://github.com/novocaine/xit"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 
 <div class="row"><div id="csv-upload-container" class="col-lg-offset-2 col-lg-8">
 
 <div class="text-center" id="big-header">
     <h3>
-        Upload Users & Access Levels
+        Upload Users &amp; Access Levels
     </h3>
 
     <p>
@@ -50,19 +50,19 @@ footer {
       <div class="modal-body">
         <h3>Overview</h3>
         This tool helps you upload Users and Access Levels to an XPLAN site in bulk, from a spreadsheet.
-        
+
         Getting all the data right in a spreadsheet is a lot quicker than clicking around in XPLAN, and a lot
         less error prone.
 
-        Note that you will need a login to the XPLAN site that allows you to create users and/or to edit access 
+        Note that you will need a login to the XPLAN site that allows you to create users and/or to edit access
         levels.
 
         <h3>Uploading access levels</h3>
 
-        <p>Download the site's current access levels using the link at the bottom of the page, then 
+        <p>Download the site's current access levels using the link at the bottom of the page, then
         upen up the CSV file that downloads in Microsoft Excel and edit it.</p>
 
-        <p>You include capbilities in an access level by marking the cell with something (like X for example) 
+        <p>You include capbilities in an access level by marking the cell with something (like X for example)
         and exclude them by leaving the cell blank.</p>
 
         <p>If you want to add a new access level, put a new row in at the end of the spreadsheet like the other
@@ -70,18 +70,18 @@ footer {
         when you upload the file. As a rule, if that column has an ID in it, you're updating an existing access
         level, and if it's blank, you're creating a new one.</p>
 
-        <p>When you're done, come back to this tool and upload the file, choosing "Upload a CSV of new and 
+        <p>When you're done, come back to this tool and upload the file, choosing "Upload a CSV of new and
         existing Access Levels".</p>
 
         <h3>Uploading users</h3>
 
         <p>Download the New Users template using the link at the bottom of the page.</p>
 
-        <p>The mandatory columns are user_id (which sets the XPLAN login id), password (for XPLAN login), 
-        access_level (which sets the access level of the user to one you created or updated earlier), and 
+        <p>The mandatory columns are user_id (which sets the XPLAN login id), password (for XPLAN login),
+        access_level (which sets the access level of the user to one you created or updated earlier), and
         billing_group (which sets an XPLAN billing group). Everything else is optional.</p>
 
-        <p>To add new columns of fields, you need to locate the XPLAN of the field first. In XPLAN, go to XPLAN &gt; 
+        <p>To add new columns of fields, you need to locate the XPLAN of the field first. In XPLAN, go to XPLAN &gt;
         Administration Functions &gt; Field Definitions and click on the field. The field ID is in "name/ID"
         after the entity / (slash) part but not including any number. For example, the Key Details | First Name
         field has "entity / first_name (2)" - you want the <i>first_name</i> bit only for your column header.</p>
@@ -102,21 +102,21 @@ footer {
 
 <form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
   {{ form.hidden_tag() }}
-  
+
   {{ wtf.form_errors(form) }}
 
   <div class="help-block">Your XPLAN site and credentials</div>
-  
+
   {{ wtf.form_field(form.xplan_url, form_type="horizontal") }}
-  
+
   {{ wtf.form_field(form.xplan_username, form_type="horizontal") }}
-  
+
   {{ wtf.form_field(form.xplan_password, form_type="horizontal") }}
 
   <div class="help-block">What sort of data would you like to upload?</div>
 
   {{ wtf.form_field(form.csv_type, form_type="horizontal") }}
-  
+
   {{ wtf.form_field(form.file, form_type="horizontal") }}
 
   <div class="form-group">
@@ -130,7 +130,6 @@ footer {
 <div id="halp">
 <div class="help-block">Trying to get started?</div>
 <p>
-<a href="#">Help</a>
 <a href="#" id="download-access-levels">Download the current Access Levels as a CSV</a>
 - you can edit this and upload it back
 </p>
