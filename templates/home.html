@@ -15,10 +15,21 @@
     margin-bottom: 1em;
 }
 
+#halp
+{
+    margin-top: 4em;
+}
+
+footer {
+    margin-top: 4em;
+}
+
 </style>
 {% endblock %}
 
 {% block content %}
+
+<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
 
 <div class="row"><div id="csv-upload-container" class="col-lg-offset-2 col-lg-8">
 
@@ -51,14 +62,16 @@
 
 </form>
 
+<div id="halp">
 <div class="help-block">Not sure how to get started?</div>
 <p>
 <a href="#" id="download-access-levels">Download the current Access Levels as a CSV</a>
 - you can edit this and upload it back
 </p>
 <p>
-<a href="/users.csv">Download a New Users template</a> - add your users to this and upload it
+<a href="/static/users.csv">Download a New Users template</a> - add your users to this and upload it
 </p>
+</div>
 
 </div></div>
 {% endblock %}
