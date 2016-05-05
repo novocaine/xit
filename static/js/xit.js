@@ -22,7 +22,7 @@
 
   function formatSuccess(body, code, action) {
     var xplan_url = $("#xplan_url").get(0).value;
-    if (xplan_url[xplan_url-1] !== "/") {
+    if (xplan_url[xplan_url.length-1] !== "/") {
         xplan_url += "/";
     }
     if (action === "/upload_csv/users") {
