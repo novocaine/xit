@@ -35,6 +35,7 @@ footer {
 
 <h3 class="text-center" id="big-header">Upload Users & Access Levels</h3>
 
+<div id="front-page">
 <form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
   {{ form.hidden_tag() }}
   
@@ -71,6 +72,7 @@ footer {
 <p>
 <a href="/static/users.csv">Download a New Users template</a> - add your users to this and upload it
 </p>
+</div>
 </div>
 
 </div></div>

@@ -34,7 +34,12 @@
       var user_url = xplan_url + "factfind/view/" + body.id + "?role=user";
       return "<a href='" + user_url + "'>" + label + "</a>";
     } else {
-      return body;
+      if (code === 200) {
+        verb = "Updated";
+      } else {
+        verb = "Created";
+      }
+      return verb + ": " + body.name + "(" + body.id + "): " + JSON.stringify(body.caps);
     }
   }
 
@@ -139,7 +144,7 @@
       // Thanks to: http://stackoverflow.com/a/10899796
       var form_data = new FormData($(this)[0]);
 
-      $('#csv-upload-form').hide();
+      $('#front-page').hide();
 
       // Funky loader.
       $('#csv-upload-container')
