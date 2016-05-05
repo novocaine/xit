@@ -43,61 +43,6 @@ footer {
     </p>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-body">
-        <h3>Overview</h3>
-        This tool helps you upload Users and Access Levels to an XPLAN site in bulk, from a spreadsheet.
-
-        Getting all the data right in a spreadsheet is a lot quicker than clicking around in XPLAN, and a lot
-        less error prone.
-
-        Note that you will need a login to the XPLAN site that allows you to create users and/or to edit access
-        levels.
-
-        <h3>Uploading access levels</h3>
-
-        <p>Download the site's current access levels using the link at the bottom of the page, then
-        upen up the CSV file that downloads in Microsoft Excel and edit it.</p>
-
-        <p>You include capbilities in an access level by marking the cell with something (like X for example)
-        and exclude them by leaving the cell blank.</p>
-
-        <p>If you want to add a new access level, put a new row in at the end of the spreadsheet like the other
-        rows, but leave the first 'access_level' column blank. XPLAN will generate this access level ID for you
-        when you upload the file. As a rule, if that column has an ID in it, you're updating an existing access
-        level, and if it's blank, you're creating a new one.</p>
-
-        <p>When you're done, come back to this tool and upload the file, choosing "Upload a CSV of new and
-        existing Access Levels".</p>
-
-        <h3>Uploading users</h3>
-
-        <p>Download the New Users template using the link at the bottom of the page.</p>
-
-        <p>The mandatory columns are user_id (which sets the XPLAN login id), password (for XPLAN login),
-        access_level (which sets the access level of the user to one you created or updated earlier), and
-        billing_group (which sets an XPLAN billing group). Everything else is optional.</p>
-
-        <p>To add new columns of fields, you need to locate the XPLAN of the field first. In XPLAN, go to XPLAN &gt;
-        Administration Functions &gt; Field Definitions and click on the field. The field ID is in "name/ID"
-        after the entity / (slash) part but not including any number. For example, the Key Details | First Name
-        field has "entity / first_name (2)" - you want the <i>first_name</i> bit only for your column header.</p>
-
-        <p>Add a new column with your field_id as the first row like the other columns you can see in the template.
-        Any data you put in that column will be set on the user at creation.</p>
-
-        <p>Upload the file using 'Upload a CSV of new users' and you are done.</p>
-
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
 <div id="front-page">
 
 <form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
@@ -105,7 +50,11 @@ footer {
 
   {{ wtf.form_errors(form) }}
 
-  <div class="help-block">Your XPLAN site and credentials</div>
+  <div class="help-block">
+    Your
+    <a href="https://www.iress.com/global/company/products/xplan/">XPLAN</a>
+    site and credentials
+  </div>
 
   {{ wtf.form_field(form.xplan_url, form_type="horizontal") }}
 
@@ -131,15 +80,17 @@ footer {
 <div class="help-block">Trying to get started?</div>
 <p>
 <a href="#" id="download-access-levels">Download the current Access Levels as a CSV</a>
-- you can edit this and upload it back
+&ndash; you can edit this and upload it back
 </p>
 <p>
-<a href="/static/users.csv">Download a New Users template</a> - add your users to this and upload it
+<a href="/static/users.csv">Download a New Users template</a> &ndash; add your users to this and upload it
 </p>
 </div>
 </div>
 
 </div></div>
+
+{% include 'help_modal.html' %}
 {% endblock %}
 
 {% block js %}

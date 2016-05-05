@@ -1,37 +1,42 @@
-# Install
+# XPLAN Implementation Toolkit
+
+XIT is a tool that helps you upload Users and Access Levels to an
+[XPLAN](https://www.iress.com/global/company/products/xplan/) site in bulk,
+from a spreadsheet.
+
+Getting all the data right in a spreadsheet is a lot quicker than clicking
+around in XPLAN, and a lot less error prone.
+
+## Install
 
 Install redis. On windows, you can install it from https://github.com/MSOpenTech/redis/releases
 
-Then to install the python deps, in a virtualenv do 
+Then to install the python deps, in a virtualenv do
 
 ```pip install -r requirements.txt```
 
-# Run
+## Run
 
 You need to have redis, celery, and the webserver all running for stuff to work.
 
-Start redis (on windows you can run C:\Program Files\Redis\redis-server.exe - I found it 
+Start redis (on windows you can run C:\Program Files\Redis\redis-server.exe - I found it
 didn't work properly unless I ran it as administrator, ymmv)
 
 Start the webserver
 
 ``` python web.py```
 
-Start the celery - for me this looks like 
+Start the celery - for me this looks like
 
 ```venv/Scripts/celery -A tasks worker --loglevel=info ```
 
-# Tests
+## Tests
 
 The tests use environment variables, you need to run something like this:
 
 ```WEB_URL=http://localhost:5000 XPLAN_USERNAME=a XPLAN_PASSWORD=a XPLAN_URL=http://localhost:1983/autotestuk/ /cygdrive/c/python27/scripts/nosetests```
 
-# REST API
-
-These URLs are so ugly, sorry.
-
-## CSV Uploads
+## CSV Upload URLs
 
 These are all multipart POST handlers taking the following multipart/form-data parts:
 
@@ -47,7 +52,7 @@ When successful, each of the handlers returns 200 and a task UUID in the body wh
 
 ###```POST /upload_csv/access_levels```
 
-Upload a CSV of access levels in the format returned by ```GET /access_levels```, see [access_levels.csv](access_levels.csv) 
+Upload a CSV of access levels in the format returned by ```GET /access_levels```, see [access_levels.csv](access_levels.csv)
 
 ###```POST /upload_csv/users```
 
@@ -59,7 +64,7 @@ Dumps a csv of the site's access levels that can be used as a template. This als
 
 ###```GET /task/<task_id>```
 
-Get the results of the CSV upload. 
+Get the results of the CSV upload.
 
 When the task has not yet completed, returns HTTP 102 with a description of the job status in JSON format (we could use celery custom states to doing load progress quite easily, but I haven't done this).
 
@@ -103,12 +108,3 @@ Get the result (after a few 102s)
 
 
 ```[{"msg": "Created", "body": "{\"id\":330}", "code": 201, "name": "0", "headers": {"Content-Type": "application/json"}}, {"msg": "Created", "body": "{\"id\":331}", "code": 201, "name": "1", "headers": {"Content-Type": "application/json"}}, {"msg": "Created", "body": "{\"id\":332}", "code": 201, "name": "2", "headers": {"Content-Type": "application/json"}}, {"msg": "Created", "body": "{\"id\":333}", "code": 201, "name": "3", "headers": {"Content-Type": "application/json"}}, {"msg": "Created", "body": "{\"id\":334}", "code": 201, "name": "4", "headers": {"Content-Type": "application/json"}}, {"msg": "Created", "body": "{\"id\":335}", "code": 201, "name": "5", "headers": {"Content-Type": "application/json"}}, {"msg": "Created", "body": "{\"id\":336}", "code": 201, "name": "6", "headers": {"Content-Type": "application/json"}}, {"msg": "Created", "body": "{\"id\":337}", .... ```
-
-
-
-
-
-
-
-
-
