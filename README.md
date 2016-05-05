@@ -75,7 +75,7 @@ Stick some Xs in it and push it back up
 
 ```curl -v "http://localhost:5000/upload_csv/access_levels" -F "xplan_url=http://localhost:1983/autotestuk/" -F "xplan_username=a" -F "xplan_password=a" -F "file=@test.csv"```
 
-> ```1ebae51e-efdd-4e34-b111-033ef0306bc3```
+> 1ebae51e-efdd-4e34-b111-033ef0306bc3
 
 Ask for the result of the upload
 
@@ -87,7 +87,9 @@ Create 20 or so users
 
 ```curl -v "http://localhost:5000/upload_csv/users" -F "xplan_url=http://localhost:1983/autotestuk/" -F "xplan_username=a" -F "xplan_password=a" -F "file=@users.csv"```
 
-> ```8d47832b-1c8b-4c3f-a811-f03f1eb448e2```
+
+> 8d47832b-1c8b-4c3f-a811-f03f1eb448e2
+
 
 Get the result (after a few 102s)
 
