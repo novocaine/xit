@@ -12,11 +12,11 @@ XIT was proudly built as a project of the
 
 ## Install
 
-Install redis. On windows, you can install it from https://github.com/MSOpenTech/redis/releases
+Install redis. On windows, you can install it from <https://github.com/MSOpenTech/redis/releases>. On Debian-based Linux distros (e.g. Ubuntu), install with `sudo apt-get install redis-server`.
 
 Then to install the python deps, in a virtualenv do
 
-```pip install -r requirements.txt```
+```pip install -r requirements/dev.txt```
 
 ## Run
 
