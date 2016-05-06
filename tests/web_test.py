@@ -1,10 +1,13 @@
+from io import BytesIO
 import os
 import requests
 import time
 import urlparse
+
 from nose.tools import assert_equal, assert_true
-from test_util import spammy_logging, TEST_USERS_CSV
-from io import BytesIO
+
+from .test_util import spammy_logging, TEST_USERS_CSV
+
 
 class TestWeb(object):
     def setup(self):
@@ -21,7 +24,7 @@ class TestWeb(object):
 
         # upload a file and get a task id
         files = [
-            ("file", ("file.csv", BytesIO(TEST_USERS_CSV), 'text/csv'))
+            ("file", ("file.csv", BytesIO(TEST_USERS_CSV % time.time()), 'text/csv'))
         ]
         response = requests.post(urlparse.urljoin(self.web_url, "/upload_csv/users"),
             data={
@@ -50,5 +53,6 @@ class TestWeb(object):
         task_desc = response.json()
         assert_equal(len(task_desc), 1)
         assert_equal(task_desc[0]["code"], 201)
+
 
 spammy_logging()

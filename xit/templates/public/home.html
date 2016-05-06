@@ -2,7 +2,7 @@
 
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block page_title %}XIT: XPLAN Implementation Toolkit{% endblock %}
+{% block page_title %}{{ config.SITE_NAME }}{% endblock %}
 
 {% block css %}
 <style>
@@ -45,7 +45,7 @@ footer {
 
 <div id="front-page">
 
-<form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
+<form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('public.upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
   {{ form.hidden_tag() }}
 
   {{ wtf.form_errors(form) }}
@@ -90,7 +90,7 @@ footer {
 
 </div></div>
 
-{% include 'help_modal.html' %}
+{% include 'public/help_modal.html' %}
 {% endblock %}
 
 {% block js %}

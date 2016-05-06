@@ -7,6 +7,9 @@ from a spreadsheet.
 Getting all the data right in a spreadsheet is a lot quicker than clicking
 around in XPLAN, and a lot less error prone.
 
+XIT was proudly built as a project of the
+[IRESS Hackathon 2016](https://www.iress.com/au/resources/news-resources/global-hackathon-2016-power-and-passion-our-people/).
+
 ## Install
 
 Install redis. On windows, you can install it from https://github.com/MSOpenTech/redis/releases
@@ -19,22 +22,22 @@ Then to install the python deps, in a virtualenv do
 
 You need to have redis, celery, and the webserver all running for stuff to work.
 
-Start redis (on windows you can run C:\Program Files\Redis\redis-server.exe - I found it
-didn't work properly unless I ran it as administrator, ymmv)
+Start redis. On windows you can run `C:\Program Files\Redis\redis-server.exe` - I found it
+didn't work properly unless I ran it as administrator, ymmv. On Ubuntu (and probably most other modern Linux distros), a quick `sudo service redis-server start` should do the trick.
 
 Start the webserver
 
-``` python web.py```
+``` python manage.py server```
 
 Start the celery - for me this looks like
 
-```venv/Scripts/celery -A tasks worker --loglevel=info ```
+```celery -A xit.tasks worker --loglevel=info ```
 
 ## Tests
 
-The tests use environment variables, you need to run something like this:
+The tests use environment variables, you need to run something like this (where `username` and `password` are XPLAN login credentials):
 
-```WEB_URL=http://localhost:5000 XPLAN_USERNAME=a XPLAN_PASSWORD=a XPLAN_URL=http://localhost:1983/autotestuk/ /cygdrive/c/python27/scripts/nosetests```
+```python manage.py test --web_url="http://localhost:5000" --username="a" --password="a" --xplan_url="http://localhost:8080/trunk_test/"```
 
 ## CSV Upload URLs
 

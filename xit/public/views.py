@@ -1,54 +1,25 @@
+# -*- coding: utf-8 -*-
+"""Public section, including homepage."""
+
 import json
-import os
 import os.path
-import tempfile
 import requests
 
-from flask import Flask, request, make_response, render_template, Response
-from flask_bootstrap import Bootstrap
-from flask_wtf import Form
-from flask_wtf.file import FileField, FileAllowed
+from flask import (Blueprint, request, make_response, render_template,
+                   Response)
+from flask import current_app as app
 from werkzeug import secure_filename
-from wtforms import PasswordField, RadioField, TextField
-from wtforms.validators import DataRequired
 
-from tasks import process_user_csv, process_access_levels_csv
-from access_levels import dump_access_levels_csv
+from xit.tasks import process_user_csv, process_access_levels_csv
+from xit.access_levels import dump_access_levels_csv
 
-
-app = Flask(__name__)
-
-# TODO put them somewhere secure
-app.config["UPLOAD_FOLDER"] = tempfile.gettempdir()
-app.config["SECRET_KEY"] = os.environ.get('XIT_SECRET', 'secret-key')
-
-bs = Bootstrap()
-bs.init_app(app)
+from .forms import CsvUploadForm
 
 
-class CsvUploadForm(Form):
-    xplan_url = TextField(
-        'XPLAN URL',
-        validators=[DataRequired()])
-    xplan_username = TextField(
-        'Username',
-        validators=[DataRequired()])
-    xplan_password = PasswordField(
-        'Password',
-        validators=[DataRequired()])
-    csv_type = RadioField(
-        'CSV Type',
-        choices=(('users', 'Upload a CSV of new users'), ('access_levels', ' Upload a CSV of new and existing Access Levels')),
-        default='users',
-        validators=[DataRequired()])
-    file = FileField('CSV File', validators=[
-        DataRequired(),
-        FileAllowed(
-            ('csv',),
-            ('Only CSV files can be uploaded for this field'))])
+blueprint = Blueprint('public', __name__, static_folder="../static")
 
 
-@app.route("/task/<task>")
+@blueprint.route("/task/<task>")
 def task(task):
     result = process_user_csv.AsyncResult(task)
 
@@ -65,7 +36,7 @@ def task(task):
     }), status=102, mimetype="application/json")
 
 
-@app.route("/upload_csv/<csv_type>", methods=["POST"])
+@blueprint.route("/upload_csv/<csv_type>", methods=["POST"])
 def upload_csv(csv_type):
     arg_names = "xplan_url", "xplan_username", "xplan_password"
     try:
@@ -94,7 +65,7 @@ def upload_csv(csv_type):
     return make_response(str(async_result.id), 200)
 
 
-@app.route("/access_levels.csv")
+@blueprint.route("/access_levels.csv")
 def dump_access_levels():
     arg_names = "xplan_url", "xplan_username", "xplan_password"
     try:
@@ -111,16 +82,11 @@ def dump_access_levels():
             return make_response("Error talking to XPLAN", 500)
 
 
-@app.route("/")
+@blueprint.route("/")
 def home():
     form = CsvUploadForm()
     template_vars = dict(
         form=form)
 
-    return render_template("home.html",
+    return render_template("public/home.html",
                            **template_vars)
-
-
-if __name__ == "__main__":
-    app.debug = 1
-    app.run()

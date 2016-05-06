@@ -1,16 +1,4 @@
-amqp==1.4.9
-anyjson==0.3.3
-billiard==3.3.0.23
-celery==3.1.23
-Flask==0.10.1
-Flask-WTF==0.12
-Flask-Bootstrap==3.3.5.7
-WTForms==2.1
-itsdangerous==0.24
-Jinja2==2.8
-kombu==3.0.35
-MarkupSafe==0.23
-pytz==2016.4
-redis==2.10.5
-requests==2.10.0
-Werkzeug==0.11.9
+# Included because many Paas's require a requirements.txt file in the project root
+# Just installs the production requirements.
+-r requirements/prod.txt
+
