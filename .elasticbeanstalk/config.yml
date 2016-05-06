@@ -1,0 +1,11 @@
+branch-defaults:
+  master:
+    environment: xit-env
+    group_suffix: null
+global:
+  application_name: xit
+  default_ec2_keyname: xit-james
+  default_platform: python2.7
+  default_region: us-west-2
+  profile: null
+  sc: git
