@@ -13,6 +13,7 @@ class Config(object):
     UPLOAD_FOLDER = tempfile.gettempdir() # TODO put them somewhere secure
 
     SITE_NAME = 'XIT: XPLAN Implementation Toolkit'
+    MAX_CONTENT_LENGTH = 50 * 1024 * 1024
 
 
 class ProdConfig(Config):
