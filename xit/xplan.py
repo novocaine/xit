@@ -26,7 +26,6 @@ def _get_fields_from_csv(csvfile):
             break
 
     # TODO: validate colheaders?
-
     for row in reader:
         fields = {
             colheader: field

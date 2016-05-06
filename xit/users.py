@@ -3,8 +3,10 @@ Upload users via CSV
 """
 
 import csv
-import xplan
 import itertools
+import random
+
+from xit import xplan
 
 PARAM_COLUMNS = ("access_level", "billing_group", "user_id", "password")
 
@@ -18,6 +20,9 @@ def _user_fields_to_batch_data(url, rows_of_fields):
     payload = []
     for fields in rows_of_fields:
         _validate_fields(fields)
+
+        if 'user_id' in fields:
+            fields['user_id'] = fields['user_id'].replace('RAND', str(random.randint(1, 100000000)))
 
         body = {
             "fields": { k: v for k, v in fields.iteritems()
