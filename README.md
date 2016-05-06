@@ -29,9 +29,9 @@ Start the webserver
 
 ``` python manage.py server```
 
-Start the celery - for me this looks like
+Start the celery
 
-```celery -A xit.tasks worker --loglevel=info ```
+```celery -A xit.tasks worker --loglevel=info --config=celeryconfig_dev```
 
 ## Tests
 

@@ -5,7 +5,6 @@ from access_levels import upload_access_level_csv
 from io import BytesIO
 
 app = Celery('tasks')
-app.config_from_object("celeryconfig")
 
 @app.task(bind=True)
 def add(self, x, y):
