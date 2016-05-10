@@ -29,19 +29,6 @@ def _make_context():
     return {'app': app}
 
 
-@manager.command
-def test(web_url=None, username=None, password=None, xplan_url=None):
-    """Run the tests."""
-    import nose
-    os.environ["WEB_URL"] = web_url
-    os.environ["XPLAN_USERNAME"] = username
-    os.environ["XPLAN_PASSWORD"] = password
-    os.environ["XPLAN_URL"] = xplan_url
-    exit_code = nose.run(argv=[TEST_PATH, 'tests.web_test', '--verbose'])
-    exit_code = nose.run(argv=[TEST_PATH, 'tests.xplan_test', '--verbose'])
-    return exit_code
-
-
 manager.add_command('server', Server())
 manager.add_command('shell', Shell(make_context=_make_context))
 manager.add_command("urls", ShowUrls())
