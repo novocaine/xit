@@ -12,9 +12,6 @@ if os.environ.get("XIT_ENV") == 'prod':
 else:
     app = create_app(DevConfig)
 
-HERE = os.path.abspath(os.path.dirname(__file__))
-TEST_PATH = os.path.join(HERE, 'tests')
-
 manager = Manager(app)
 
 # This is for Amazon EB which looks for an object called 'application'

@@ -45,7 +45,7 @@ footer {
 
 <div id="front-page">
 
-<form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('public.upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
+<form id="csv-upload-form" method="POST" class="form form-horizontal" action="{{ url_for('api.upload_csv', csv_type='users') }}" enctype="multipart/form-data" role="form">
   {{ form.hidden_tag() }}
 
   {{ wtf.form_errors(form) }}

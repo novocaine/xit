@@ -4,6 +4,3 @@
 # Testing
 nose>=1.3.0
 
-# Management script
-Flask-Script==2.0.5
-

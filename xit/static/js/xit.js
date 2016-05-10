@@ -93,38 +93,24 @@
    * Polls the server at a regular interval to see if the task has finished.
    */
   function pollTaskStatus(task_uuid, action) {
-    $.get('/task/' + task_uuid, function(data) {
-      $('#loading-container').hide();
-
-      if (data && data.length) {
-        showMessage('Done!', 'success');
-        showImportReport(data, action);
-      }
-      else {
-        // Unexpected if the server returns "success" but data has no
-        // "OK" messages.
-        var msg = (data && data.length && data[0].msg)
-          ? data[0].msg
-          : 'No data was imported';
-        showMessage(msg, 'danger');
-      }})
-      .fail(function(jqXHR) {
-        // Server has returned an actual error (e.g. could be a 500),
-        // So handle it as such.
-        if (jqXHR.responseText || jqXHR.status) {
+    $.get('/task/' + encodeURIComponent(task_uuid), null, "json")
+      .success(function(data, status, jqXHR) {
+        if (jqXHR.status === 200) {
           $('#loading-container').hide();
-          showMessage(jqXHR.responseText, 'danger');
-        }
-
-        // If we've made it down here, it means that the response was empty
-        // (which is what triggers .fail(), there isn't any actual error
-        // message / code). So, most likely it's a 102 "Processing" response
-        // with empty body, so keep polling.
-        else {
+          showMessage('Done!', 'success');
+          showImportReport(data, action);
+        } else if (jqXHR.status === 202) {
           setTimeout(function() {
-            pollTaskStatus(task_uuid, action);
+              pollTaskStatus(task_uuid, action);
           }, pollInterval);
+        } else {
+          $('#loading-container').hide();
+          showMessage('Sorry, something went wrong on our system.', 'danger');
         }
+      })
+      .fail(function(data, status, jqXHR) {
+        $('#loading-container').hide();
+        showMessage('Sorry, something went wrong on our system.', 'danger');
       });
   }
 

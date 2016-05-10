@@ -7,7 +7,8 @@ from xit.settings import ProdConfig
 from xit.extensions import (
     bs,
 )
-from xit.public.views import blueprint as public_bp
+from xit.public.views import blueprint as views_bp
+from xit.public.api import blueprint as api_bp
 
 
 def create_app(config_object=ProdConfig):
@@ -17,6 +18,14 @@ def create_app(config_object=ProdConfig):
     """
     app = Flask(__name__)
     app.config.from_object(config_object)
+
+    if not app.debug:
+        import logging
+        from logging import FileHandler
+        handler = FileHandler(app.config["LOG_FILENAME"])
+        handler.setLevel(logging.INFO)
+        app.logger.addHandler(handler)
+
     register_extensions(app)
     register_blueprints(app)
     register_errorhandlers(app)
@@ -30,16 +39,24 @@ def register_extensions(app):
 
 
 def register_blueprints(app):
-    app.register_blueprint(public_bp)
+    app.register_blueprint(views_bp)
+    app.register_blueprint(api_bp)
     return None
 
 
 def register_errorhandlers(app):
+    from flask import request
+
     def render_error(error):
         # If a HTTPException, pull the `code` attribute; default to 500
         error_code = getattr(error, 'code', 500)
-        return (render_template("{0}.html".format(error_code)),
-                error_code)
+
+        if request.accept_mimetypes["text/html"]:
+            return (render_template("{0}.html".format(error_code)),
+                    error_code)
+        else:
+            # don't send html to people that can't process html
+            return ""
     for errcode in [404, 500]:
         app.errorhandler(errcode)(render_error)
     return None

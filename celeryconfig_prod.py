@@ -1,10 +1,6 @@
 from celeryconfig import *
+import os
+endpoint = os.environ["REDIS_ENDPOINT_ADDRESS"]
 
-BROKER_TRANSPORT = "sqs"
-BROKER_URL = "redis://localhost:6379/0"
-BROKER_TRANSPORT_OPTIONS = {
-    'region': 'us-west-2'
-}
-
-BROKER_USER = AWS_ACCESS_KEY_ID
-BROKER_PASSWORD = AWS_SECRET_ACCESS_KEY
+BROKER_URL = "redis://%s:6379/0" % endpoint
+CELERY_RESULT_BACKEND = "redis://%s:6379/0" % endpoint

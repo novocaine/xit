@@ -20,6 +20,7 @@ class ProdConfig(Config):
     """Production configuration."""
     ENV = 'prod'
     DEBUG = False
+    LOG_FILENAME = "/opt/python/log/xit.log"
 
 
 class DevConfig(Config):
