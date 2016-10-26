@@ -43,5 +43,5 @@ def _user_fields_to_batch_data(url, rows_of_fields):
 
 
 def upload_user_csv(xplan_url, xplan_username, xplan_password, csvfile):
-    return xplan.upload_csv(xplan_url, "/resourceful/entity/user", xplan_username, xplan_password, csvfile, 10,
+    return xplan.upload_csv(xplan_url, "/resourceful/entity/user-v2", xplan_username, xplan_password, csvfile, 10,
             _user_fields_to_batch_data)

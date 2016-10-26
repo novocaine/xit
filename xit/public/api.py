@@ -54,10 +54,9 @@ def upload_csv(csv_type):
     else:
         return make_response("Unknown CSV type", 404)
 
-    filename = secure_filename(file.filename)
-    path = os.path.join(current_app.config["UPLOAD_FOLDER"], filename)
-    file.save(path)
-    args.append(path)
+    # pass contents of file as a string with the task
+    s = file.read()
+    args.append(s)
 
     async_result = task.delay(*args)
     return make_response(str(async_result.id), 200)

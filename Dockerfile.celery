@@ -1,0 +1,4 @@
+FROM python:2.7-onbuild
+
+CMD ["celery", "-A", "xit.tasks", "worker", "--loglevel=info", "--config=celeryconfig_dev"]
+
